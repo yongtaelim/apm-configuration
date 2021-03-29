@@ -1,0 +1,13 @@
+global:
+  resolve_timeout: 10s
+  slack_api_url: 'https://hooks.slack.com/services/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'
+
+route: #라우트 경로 설정
+  receiver: 'slack-notifications' # 알림 설정 대상
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - channel: '#service-alert'
+    send_resolved: true
+    text: "<!channel> {{ range .Alerts}} \nsummary: {{ .Annotations.summary }}\ndescription: {{ .Annotations.description }} {{ end }}"

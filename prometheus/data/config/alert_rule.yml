@@ -1,0 +1,11 @@
+groups:
+- name: test # 그룹 이름
+  rules:
+  - alert: test-alert # 알림 이름
+    expr:  container_memory_usage_bytes{image!=""} > 500000000 #알림 조건 설정
+    for: 15s
+    labels: # 필요한 label들을 설정할 수 있다.
+       severity: warning
+    annotations:
+      summary: "{{ $labels.groups }} {{ $labels.instance }}"
+      description: "{{ $labels.image }}의 메모리 사용량이 증가합니다. (current value: {{ $value }})"

@@ -4,9 +4,14 @@ global:
   evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
   # scrape_timeout is set to the global default (10s).
 
+alerting:
+  alertmanagers:
+   - static_configs:
+     - targets: ['172.1.2.3:9093']
+
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
-  # - "first_rules.yml"
+   - "alert_rules.yml"
   # - "second_rules.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
@@ -30,19 +35,19 @@ scrape_configs:
   - job_name: 'gateway-server'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['172.26.15.204:5555']
+      - targets: ['172.1.2.3:2155']
 
   - job_name: 'eureka-server'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['172.26.15.204:8761']
+      - targets: ['172.1.2.3:5332']
 
   # node exporter...
   - job_name: 'node-exporter'
     static_configs:
-      - targets: ['172.26.8.97:9100']
+      - targets: ['172.1.2.4:9100']
 
   # cadvisor exporter...
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['172.26.8.97:3100']
+      - targets: ['172.1.2.5:3100']
