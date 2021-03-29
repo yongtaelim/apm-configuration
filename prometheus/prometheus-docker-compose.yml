@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+     - ./data/config/prometheus.yml:/etc/prometheus/prometheus.yml
+       #     - ./data/prometheus/data:/prometheus
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+     - 9090:9090
+    networks:
+     - prometheus-network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    user: "$UID:$GID"
+    ports:
+     - 3000:3000
+    depends_on:
+      - prometheus
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    networks:
+      - prometheus-network
+    links:
+      - prometheus:prometheus
+
+networks:
+  prometheus-network:
